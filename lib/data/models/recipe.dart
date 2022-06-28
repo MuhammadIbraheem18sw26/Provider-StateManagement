@@ -12,8 +12,15 @@ class Recipe extends Equatable {
   final double? totalWeight;
   final double? totalTime;
 
-  Recipe(this.id, this.label, this.image, this.url, this.ingredients,
-      this.calories, this.totalWeight, this.totalTime);
+  Recipe(
+      {this.id,
+      this.label,
+      this.image,
+      this.url,
+      this.ingredients,
+      this.calories,
+      this.totalWeight,
+      this.totalTime});
 
   List<Object?> get props =>
       [label, image, url, calories, totalWeight, totalTime];
