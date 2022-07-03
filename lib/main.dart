@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 import './data/repository.dart';
-import 'mock_service/mock_service.dart';
+
 import 'package:provider/provider.dart';
+import './network/recipe_service.dart';
+import './network/service_interface.dart';
 
 import 'data/memory_repository.dart';
 import 'ui/main_screen.dart';
@@ -29,11 +31,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<MemoryRepository>(
+        Provider<Repository>(
           lazy: false,
           create: (_) => MemoryRepository(),
         ),
-        Provider(create: (_) => MockService()..create()),
+        Provider<ServiceInterface>(
+          create: (_) => RecipeService.create(),
+          lazy: false,
+        ),
       ],
       child: MaterialApp(
         title: 'Recipes_Finder',
