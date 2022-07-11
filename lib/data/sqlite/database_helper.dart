@@ -42,5 +42,11 @@ class DatabaseHelper {
  )
  ''');
   }
-// TODO: Add code to open database
+
+  Future<Database> _initDatabase() async {
+    final documentDirectory = await getApplicationDocumentsDirectory();
+    final path = join(documentDirectory.path, _databaseName);
+    Sqflite.setDebugModeOn(false);
+    return openDatabase(path, version: _databaseVersion, onCreate: _onCreate);
+  }
 }
