@@ -14,7 +14,7 @@ class DatabaseHelper {
   static const recipeId = 'recipeId';
   static const ingredientId = 'ingredientId';
 
-  static late BriteDatabase _steamDatabase;
+  static late BriteDatabase _streamDatabase;
 
   // SingleTon
 
@@ -49,4 +49,19 @@ class DatabaseHelper {
     Sqflite.setDebugModeOn(false);
     return openDatabase(path, version: _databaseVersion, onCreate: _onCreate);
   }
+
+  Future<Database> get database async{
+    if(database!=null) return _database!;
+    await lock.synchronized(() async{
+      if(_database==null){
+        _database=await _initDatabase();
+        _streamDatabase=BriteDatabase(_database!);
+
+      }
+
+    });
+    return _database!;
+    }
+  }
+
 }
