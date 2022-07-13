@@ -50,18 +50,39 @@ class DatabaseHelper {
     return openDatabase(path, version: _databaseVersion, onCreate: _onCreate);
   }
 
-  Future<Database> get database async{
-    if(database!=null) return _database!;
-    await lock.synchronized(() async{
-      if(_database==null){
-        _database=await _initDatabase();
-        _streamDatabase=BriteDatabase(_database!);
-
+  Future<Database> get database async {
+    if (database != null) return _database!;
+    await lock.synchronized(() async {
+      if (_database == null) {
+        _database = await _initDatabase();
+        _streamDatabase = BriteDatabase(_database!);
       }
-
     });
     return _database!;
-    }
   }
 
+  Future<BriteDatabase> get streamDatabase async {
+    await database;
+    return _streamDatabase;
+  }
+
+  List<Recipe> parseRecipe(List<Map<String, dynamic>> recipeList) {
+    final recipes = <Recipe>[];
+    recipeList.forEach((recipeMap) {
+      final recipe = Recipe.fromJson(recipeMap);
+      recipes.add(recipe);
+    });
+    return recipes;
+  }
+
+  List<Ingredient> parseIngredients(List<Map<String, dynamic>> ingredientList) {
+    final ingredients = <Ingredient>[];
+    ingredientList.forEach((ingredientMap) {
+      // 5
+      final ingredient = Ingredient.fromJson(ingredientMap);
+      ingredients.add(ingredient);
+    });
+    return ingredients;
+  }
+//TODO: add findAppRecipe
 }
